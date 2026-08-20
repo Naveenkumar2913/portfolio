@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naveen Kumar | CSE (Data Science) Student</title>
+    <meta name="description" content="Naveen Kumar - CSE (Data Science) Student, Developer, and Problem Solver. Building practical solutions using code, data, and AI.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0a0f1a',
+                        navyLight: '#111827',
+                        navyMid: '#0f172a',
+                        cyan: '#00f2fe',
+                        blue: '#4facfe',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@11.0.8/dist/framer-motion.js"></script>
+    
+    <!-- Lucide Icons (using SVG inline approach via CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background-color: #0a0f1a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 5rem;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .glass-hover {
+            transition: all 0.3s ease;
+        }
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(0, 242, 254, 0.25);
+            transform: translateY(-2px);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0f1a; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f2fe; }
+        .text-gradient {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .border-gradient {
+            position: relative;
+            background: linear-gradient(#0a0f1a, #0a0f1a) padding-box,
+                        linear-gradient(135deg, rgba(0,242,254,0.3), rgba(79,172,254,0.1)) border-box;
+            border: 1px solid transparent;
+        }
+        .glow {
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.1);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.2);
+        }
+        .code-bg {
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(79, 172, 254, 0.05) 0%, transparent 40%);
+        }
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float { animation: float 6s ease-in-out infinite; }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 242, 254, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(0, 242, 254, 0.4); }
+        }
+        .pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        .blink { animation: blink 1s infinite; }
+        input:focus, textarea:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        // ============================================
+        // CENTRAL CONFIGURATION - EDIT ALL CONTENT HERE
+        // ============================================
+        const portfolioData = {
+            personal: {
+                name: "Naveen Kumar B L",
+                initials: "Naveen",
+                role: "CSE (Data Science) Student | Developer | Problem Solver",
+                shortBio: "I build practical solutions using code, data, and AI.",
+                tagline: "Building. Solving. Learning.",
+                email: "naveenkumar@example.com",
+                location: "Bengaluru, India",
+            },
+            social: {
+                github: "https://github.com/Naveenkumar2913",
+                linkedin: "https://www.linkedin.com/in/naveenkumarbl/",
+                leetcode: "https://leetcode.com/u/Naveen2913/",
+                email: "mailto:naveenkumar062913@example.com",
+            },
+            resume: {
+                url: "assests/NaveenResume.pdf",
+                filename: "NaveenResume.pdf",
+            },
+            stats: {
+                leetcode: "240+",
+                projects: "10+",
+                technologies: "15+",
+                cgpa: "7.6",
+            },
+            about: {
+                who: "I am a passionate Computer Science (Data Science) student with a knack for building efficient, scalable, and user-friendly applications.",
+                builds: "I build web applications, AI/ML models, and data-driven solutions to solve real-world problems.",
+                tech: "My core stack includes React, Python, and modern web technologies.",
+                learning: "I am currently diving deeper into Advanced DSA and AI/ML pipelines.",
+                goal: "My career goal is to become a Software Engineer at a top product-based company, building impactful technology.",
+            },
+            skills: {
+                categories: [
+                    {
+                        name: "Programming",
+                        icon: "code",
+                        items: ["C++", "Python", "C", "JavaScript"],
+                    },
+                    {
+                        name: "Frontend",
+                        icon: "layout",
+                        items: ["HTML", "CSS", "JavaScript", "React"],
+                    },
+                    {
+                        name: "Data Science / AI",
+                        icon: "brain",
+                        items: ["Python", "Pandas", "NumPy", "Scikit-learn", "Machine Learning","computer vision", "LLMs", "NLP"],
+                    },
+                    {
+                        name: "Core",
+                        icon: "database",
+                        items: ["DSA", "OOP", "DBMS","Operating Systems", "SQL"],
+                    },
+                    {
+                        name: "Tools",
+                        icon: "wrench",
+                        items: ["Git", "GitHub", "VS Code"],
+                    },
+                ],
+            },
+            leetcode: {
+                total: "240+",
+                easy: "104+",
+                medium: "100+",
+                hard: "35+",
+                streak: "80+",
+                profileUrl: "https://leetcode.com/u/Naveen2913/",
+            },
+            projects: [
+                {
+                    title: "AI Resume Screener-Sukriva",
+                    description: "An AI-powered resume analysis platform that evaluates resumes, identifies skills, recommends suitable jobs, and provides useful insights.",
+                    problem: "Automates the tedious manual screening of resumes using NLP and ML.",
+                    tech: ["React", "Python", "NLP", "Machine Learning"],
+                    github: "https://github.com/Naveenkumar2913/sukriva",
+                    image: "https://i.pinimg.com/736x/56/5a/b2/565ab2cd342a0f3e4f439ef381303d30.jpg",
+                    featured: true,
+                },
+                {
+                    title: "Fraud Transaction Detection",
+                    description: "Machine learning application designed to identify fraudulent transactions with high precision.",
+                    problem: "Detects anomalous patterns in transaction data to prevent financial fraud.",
+                    tech: ["Python", "Scikit-learn", "Pandas", "Streamlit"],
+                    github: "https://github.com/Naveenkumar2913/Fraud-Transaction-Detection",
+                    image: "https://i.pinimg.com/736x/6d/4e/86/6d4e8625921abae6cc20ed024dcab496.jpg",
+                    featured: true,
+                },
+                {
+                    title: "Fire Detection using YOLOv8",
+                    description: "Fire Detection using YOLOv8 is an AI-based real-time fire detection system that uses YOLOv8 and OpenCV to detect fire from video or webcam feeds and automatically trigger alarm, SMS, email, and desktop alerts for faster response.",
+                    problem: "Traditional fire monitoring systems can be slow to detect fires and may not provide immediate alerts, increasing the risk of property damage and safety hazards.",
+                    tech: ["Python", "OpenCV", "YOLOv8", "Machine Learning"],
+                    github: "https://github.com/Naveenkumar2913/Fire-Detection-using-YOLOv8",
+                    image: "https://i.pinimg.com/1200x/b0/2a/bb/b02abb286c685875edabfe303bfacff5.jpg",
+                    featured: false,
+                },
+                {
+                    title: "VisionGuard AI",
+                    description: "An AI-powered surveillance system that uses computer vision to detect unusual or potentially dangerous activities in real time and provide instant alerts.",
+                    problem: "Traditional surveillance systems rely heavily on manual monitoring, making it difficult to detect suspicious activities quickly.",
+                    tech: ["Python", "OpenCV", "Computer Vision", "Machine Learning","CSS", "HTML", "JavaScript"],
+                    github: "https://github.com/Naveenkumar2913/VisionGuardAI",
+                    image: "https://i.pinimg.com/1200x/c3/2d/09/c32d09aba665bccb141c95e1c6783d67.jpg",
+                    featured: false,
+                },
+                
+            ],
+            journey: [
+                {
+                    year: "2026",
+                    title: "Advanced DSA & System Design",
+                    description: "Focused on mastering advanced data structures, algorithms, and system design fundamentals.",
+                    type: "current",
+                },
+                {
+                    year: "2025-2026",
+                    title: "AI/ML Specialization",
+                    description: "Built multiple ML projects including fraud detection systems and NLP-based applications.",
+                    type: "milestone",
+                },
+                {
+                    year: "2024-2025",
+                    title: "Programming Foundation",
+                    description: "Started competitive programming on LeetCode and built strong foundations in C++ and Python.",
+                    type: "milestone",
+                },
+                {
+                    year: "2023",
+                    title: "Started B.E. CSE (Data Science)",
+                    description: "Began my undergraduate journey at RNS Institute of Technology with a focus on data science.",
+                    type: "milestone",
+                },
+            ],
+            education: {
+    school: {
+        institution: "DVS English Medium High School",
+        qualification: "SSLC / 10th",
+        percentage: "90%",
+        year: "2021",
+        location: "Chitradurga, Karnataka, India"
+    },
+
+    puCollege: {
+        institution: "Sri Siddeshwara PU College",
+        qualification: "PUC / 12th",
+        stream: "PCMB (Physics, Chemistry, Mathematics, Biology)",
+        percentage: "90%",
+        year: "2023",
+        location: "Davangere, Karnataka, India"
+    },
+
+    engineering: {
+        institution: "RNS Institute of Technology",
+        qualification: "B.E. — Computer Science & Data Science",
+        cgpa: "7.6",
+        year: "2023 — 2027",
+        location: "Bengaluru, India",
+        status: "Pursuing"
+    }
+},
+            currentlyLearning: [
+                "Advanced System Design",
+                "Deep Learning & Neural Networks",
+                "Cloud Architecture (AWS)",
+                "Open Source Contributions",
+            ],
+             certifications: [
+    {
+        title: "Cloud Computing ",
+        issuer: "IIT Kharagpur",
+        date: "October-2025",
+        description: "Certification covering cloud computing concepts and technologies.",
+        skills: ["Cloud Computing", "AWS"],
+        link: "https://archive.nptel.ac.in/content/noc/NOC25/SEM2/Ecertificates/106/noc25-cs107/Course/NPTEL25CS107S25260118510676600.pdf"
+    },
+
+    {
+        title: "Data Visualization",
+        issuer: "Jhons Hopkins University",
+        date: "November-2025",
+        description: "Certification of completion of Foundations of Data Visualization, Advanced Techniques in Data Visualization, and Specialized Data Visualization Approaches.",
+        skills: ["Python", "Pandas", "Matplotlib", "Seaborn", "Plotly"],
+        link: "https://coursera.org/verify/specialization/Y0NBF0UHKOI0"
+    },
+
+    {
+        title: "Programming with JavaScript",
+        issuer: "Meta",
+        date: "2025",
+        description: "Certification covering JavaScript programming and web development fundamentals.",
+        skills: ["JavaScript", "Web Development"],
+        link: "https://coursera.org/verify/4JPKYL9QF3MH"
+    },
+    {
+        title: "Design and Analysis of Algorithms",
+        issuer: "Clemson University",
+        date: "May-2025",
+        description: "Certification covering design and analysis of algorithms.",
+        skills: ["Algorithm Design", "Data Structures"],
+        link: "https://coursera.org/verify/YTQTGGPS8YLP"
+    },
+    {
+        title: "Introduction to Structured Query Language (SQL)",
+        issuer: "University of Michigan",
+        date: "April-2025",
+        description: "Certification covering SQL fundamentals and database querying.",
+        skills: ["SQL", "Database Management"],
+        link: "https://coursera.org/verify/8VZFSMT4W9DQ"
+    },
+    {
+        title: "Data Structures and Algorithms",
+        issuer: "Infosys Springboard",
+        date: "November-2024",
+        description: "Certification covering data structures and algorithms.",
+        skills: ["Data Structures", "Algorithms"],
+        link: "https://drive.google.com/file/d/1GIRvxtttPI4FGEm7XLRA_gWl-WRLAdl4/view?usp=drive_link"
+    }
+
+
+],
+        };
+
+        // ============================================
+        // ICON COMPONENTS (SVG-based, no extra deps)
+        // ============================================
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const icons = {
+                github: <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 26 9.77 5.07 5.07 0 0 0 25.91 6S24.73 5.65 20 8.18a13.38 13.38 0 0 0-7 0C6.27 5.65 5.09 6 5.09 6A5.07 5.07 0 0 0 5 9.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 23.13V27" />,
+                linkedin: <><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></>,
+                mail: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></>,
+                code: <polyline points="16 18 6 12 16 6" />,
+                external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></>,
+                download: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></>,
+                menu: <><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></>,
+                x: <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>,
+                arrow: <><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></>,
+                brain: <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />,
+                database: <><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" /><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" /></>,
+                layout: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" /></>,
+                wrench: <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />,
+                send: <><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></>,
+                user: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></>,
+                map: <><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" /><line x1="8" y1="2" x2="8" y2="18" /><line x1="16" y1="6" x2="16" y2="22" /></>,
+                trophy: <><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V22" /><path d="M14 14.66V22" /><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" /></>,
+                zap: <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />,
+                check: <polyline points="20 6 9 17 4 12" />,
+                sparkles: <><path d="M12 3l1.9 5.7L20 10l-6.1 1.3L12 17l-1.9-5.7L4 10l6.1-1.3L12 3z" /></>,
+            };
+            return (
+                <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                    {icons[name] || null}
+                </svg>
+            );
+        };
+
+        // ============================================
+        // NAVBAR COMPONENT
+        // ============================================
+        const Navbar = () => {
+            const [scrolled, setScrolled] = useState(false);
+            const [mobileOpen, setMobileOpen] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 20);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const navItems = ['Home', 'About', 'Skills', 'Projects', 'Journey','Education', 'Certifications', 'Contact'];
+
+            const handleNavClick = (item) => {
+                setMobileOpen(false);
+                const id = item.toLowerCase();
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            return (
+                <motion.nav
+                    initial={{ y: -100 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                        scrolled ? 'glass py-3' : 'py-5'
+                    }`}
+                >
+                    <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+                        <button onClick={() => handleNavClick('Home')} className="text-2xl font-bold tracking-wider">
+                            <span className="text-gradient">{portfolioData.personal.initials}</span>
+                            <span className="text-white ml-2 font-light hidden sm:inline">.dev</span>
+                        </button>
+
+                        <div className="hidden md:flex items-center gap-1">
+                            {navItems.map((item) => (
+                                <button
+                                    key={item}
+                                    onClick={() => handleNavClick(item)}
+                                    className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-cyan transition-colors relative group"
+                                >
+                                    {item}
+                                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-px bg-cyan group-hover:w-3/4 transition-all duration-300" />
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="hidden md:flex items-center gap-3">
+                            <a href={portfolioData.social.github} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-cyan transition-colors">
+                                <Icon name="github" size={18} />
+                            </a>
+                            <a href={portfolioData.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-cyan transition-colors">
+                                <Icon name="linkedin" size={18} />
+                            </a>
+                            <a href={portfolioData.resume.url} className="px-4 py-2 text-sm border border-cyan/30 text-cyan rounded-md hover:bg-cyan/10 transition-all">
+                                Resume
+                            </a>
+                        </div>
+
+                        <button
+                            onClick={() => setMobileOpen(!mobileOpen)}
+                            className="md:hidden text-white p-2"
+                            aria-label="Toggle menu"
+                        >
+                            <Icon name={mobileOpen ? "x" : "menu"} size={24} />
+                        </button>
+                    </div>
+
+                    <AnimatePresence>
+                        {mobileOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="md:hidden glass mt-3 mx-6 rounded-lg overflow-hidden"
+                            >
+                                <div className="py-4 px-6 flex flex-col gap-2">
+                                    {navItems.map((item) => (
+                                        <button
+                                            key={item}
+                                            onClick={() => handleNavClick(item)}
+                                            className="text-left py-2 text-gray-300 hover:text-cyan transition-colors"
+                                        >
+                                            {item}
+                                        </button>
+                                    ))}
+                                    <div className="flex gap-4 pt-3 border-t border-white/5 mt-2">
+                                        <a href={portfolioData.social.github} className="text-gray-300 hover:text-cyan">
+                                            <Icon name="github" size={18} />
+                                        </a>
+                                        <a href={portfolioData.social.linkedin} className="text-gray-300 hover:text-cyan">
+                                            <Icon name="linkedin" size={18} />
+                                        </a>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.nav>
+            );
+        };
+
+        // ============================================
+        // HERO SECTION
+        // ============================================
+        const Hero = () => {
+            const [text, setText] = useState('');
+            const [roleIndex, setRoleIndex] = useState(0);
+            const roles = ["Developer", "Problem Solver", "Data Enthusiast", "AI/ML Learner"];
+            const fullText = roles[roleIndex];
+
+            useEffect(() => {
+                let timeout;
+                if (text.length < fullText.length) {
+                    timeout = setTimeout(() => setText(fullText.slice(0, text.length + 1)), 100);
+                } else {
+                    timeout = setTimeout(() => {
+                        setRoleIndex((prev) => (prev + 1) % roles.length);
+                        setText('');
+                    }, 2000);
+                }
+                return () => clearTimeout(timeout);
+            }, [text, roleIndex]);
+
+            return (
+                <section id="home" className="relative min-h-screen flex items-center pt-24 pb-12 code-bg overflow-hidden">
+                    <div className="absolute inset-0 grid-bg opacity-30" />
+                    <div className="absolute top-20 right-20 w-72 h-72 bg-cyan/5 rounded-full blur-3xl" />
+                    <div className="absolute bottom-20 left-20 w-72 h-72 bg-blue/5 rounded-full blur-3xl" />
+
+                    <div className="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 items-center relative z-10">
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.7 }}
+                        >
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs text-cyan mb-6"
+                            >
+                                <span className="w-2 h-2 rounded-full bg-cyan pulse-glow" />
+                                <span>Available for opportunities</span>
+                            </motion.div>
+
+                            <motion.h1
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4"
+                            >
+                                <span className="text-white">Hi, I'm </span>
+                                <span className="text-gradient">{portfolioData.personal.name}</span>
+                            </motion.h1>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 }}
+                                className="text-xl md:text-2xl text-gray-300 mb-3 font-light"
+                            >
+                                {portfolioData.personal.role}
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5 }}
+                                className="text-lg text-cyan font-mono mb-6"
+                            >
+                                {text}<span className="blink">|</span>
+                            </motion.div>
+
+                            <motion.p
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.6 }}
+                                className="text-gray-400 text-lg mb-8 max-w-lg"
+                            >
+                                {portfolioData.personal.shortBio}
+                            </motion.p>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.7 }}
+                                className="flex flex-wrap gap-4 mb-8"
+                            >
+                                <button
+                                    onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                                    className="px-6 py-3 bg-gradient-to-r from-cyan to-blue text-navy font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan/20 transition-all flex items-center gap-2"
+                                >
+                                    View Projects <Icon name="arrow" size={16} />
+                                </button>
+                                <a
+                                    href={portfolioData.resume.url}
+                                    className="px-6 py-3 border border-cyan/30 text-cyan rounded-lg hover:bg-cyan/5 transition-all flex items-center gap-2"
+                                >
+                                    <Icon name="download" size={16} /> Download Resume
+                                </a>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.8 }}
+                                className="flex gap-5"
+                            >
+                                {[
+                                    { href: portfolioData.social.github, icon: 'github' },
+                                    { href: portfolioData.social.linkedin, icon: 'linkedin' },
+                                    { href: portfolioData.social.email, icon: 'mail' },
+                                ].map((social, i) => (
+                                    <a
+                                        key={i}
+                                        href={social.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-gray-400 hover:text-cyan transition-colors"
+                                    >
+                                        <Icon name={social.icon} size={20} />
+                                    </a>
+                                ))}
+                            </motion.div>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.7, delay: 0.3 }}
+                            className="hidden lg:block relative"
+                        >
+                            <CodeVisual />
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        // ============================================
+        // CODE VISUAL COMPONENT
+        // ============================================
+        const CodeVisual = () => {
+            const codeLines = [
+                { text: "const developer = {", color: "text-purple-400" },
+                { text: "  name: 'Naveen Kumar',", color: "text-cyan" },
+                { text: "  role: 'CSE (Data Science)',", color: "text-cyan" },
+                { text: "  skills: ['React', 'Python', 'ML'],", color: "text-yellow-300" },
+                { text: "  passion: 'Building Solutions',", color: "text-green-400" },
+                { text: "  status: 'Available',", color: "text-cyan" },
+                { text: "};", color: "text-purple-400" },
+                { text: "", color: "" },
+                { text: "developer.build(); // 🚀", color: "text-pink-400" },
+            ];
+
+            return (
+                <div className="relative float">
+                    <div className="absolute -inset-4 bg-gradient-to-r from-cyan/20 to-blue/20 rounded-2xl blur-2xl opacity-50" />
+                    <div className="relative glass rounded-lg overflow-hidden glow">
+                        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+                            <div className="flex gap-2">
+                                <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                                <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                            </div>
+                            <span className="text-xs text-gray-500 ml-2 font-mono">developer.js</span>
+                        </div>
+                        <div className="p-6 font-mono text-sm space-y-1">
+                            {codeLines.map((line, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.5 + i * 0.1 }}
+                                    className={`${line.color} flex`}
+                                >
+                                    <span className="text-gray-600 mr-4 select-none">{String(i + 1).padStart(2, '0')}</span>
+                                    <span>{line.text}</span>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <motion.div
+                        animate={{ y: [0, -10, 0] }}
+                        transition={{ duration: 4, repeat: Infinity }}
+                        className="absolute -top-6 -right-6 glass p-3 rounded-lg"
+                    >
+                        <Icon name="code" size={20} className="text-cyan" />
+                    </motion.div>
+                    <motion.div
+                        animate={{ y: [0, 10, 0] }}
+                        transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+                        className="absolute -bottom-4 -left-4 glass p-3 rounded-lg"
+                    >
+                        <Icon name="zap" size={20} className="text-blue" />
+                    </motion.div>
+                </div>
+            );
+        };
+
+        // ============================================
+        // ABOUT SECTION
+        // ============================================
+        const About = () => {
+            const points = [
+                { label: "Who I am", value: portfolioData.about.who, icon: "user" },
+                { label: "What I build", value: portfolioData.about.builds, icon: "code" },
+                { label: "Technologies", value: portfolioData.about.tech, icon: "layout" },
+                { label: "Currently Learning", value: portfolioData.about.learning, icon: "brain" },
+                { label: "Career Goal", value: portfolioData.about.goal, icon: "trophy" },
+            ];
+
+            const stats = [
+                { label: "LeetCode Problems", value: portfolioData.stats.leetcode, icon: "code" },
+                { label: "Projects", value: portfolioData.stats.projects, icon: "sparkles" },
+                { label: "Technologies", value: portfolioData.stats.technologies, icon: "layout" },
+                { label: "CGPA", value: portfolioData.stats.cgpa, icon: "trophy" },
+            ];
+
+            return (
+                <section id="about" className="py-24 relative">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <SectionHeader label="About Me" title="Who I Am" />
+
+                        <div className="grid lg:grid-cols-5 gap-8 mt-12">
+                            <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6 }}
+                                className="lg:col-span-3 space-y-3"
+                            >
+                                {points.map((point, i) => (
+                                    <motion.div
+                                        key={i}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: i * 0.1 }}
+                                        className="glass glass-hover rounded-xl p-5 flex gap-4"
+                                    >
+                                        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-cyan/10 border border-cyan/20 flex items-center justify-center text-cyan">
+                                            <Icon name={point.icon} size={18} />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-semibold text-cyan mb-1">{point.label}</h4>
+                                            <p className="text-gray-400 text-sm leading-relaxed">{point.value}</p>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0, x: 30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6 }}
+                                className="lg:col-span-2"
+                            >
+                                <div className="glass rounded-xl p-6 h-full">
+                                    <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                                        <Icon name="zap" size={18} className="text-cyan" />
+                                        Quick Stats
+                                    </h3>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {stats.map((stat, i) => (
+                                            <motion.div
+                                                key={i}
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                whileInView={{ opacity: 1, scale: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: i * 0.1 }}
+                                                className="text-center p-4 rounded-lg bg-white/[0.02] border border-white/5 hover:border-cyan/30 transition-colors"
+                                            >
+                                                <Icon name={stat.icon} size={20} className="text-cyan mx-auto mb-2" />
+                                                <div className="text-2xl font-bold text-gradient mb-1">{stat.value}</div>
+                                                <div className="text-xs text-gray-400">{stat.label}</div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // ============================================
+        // SECTION HEADER COMPONENT
+        // ============================================
+        const SectionHeader = ({ label, title, subtitle }) => (
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-12"
+            >
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs text-cyan mb-4">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan" />
+                    {label}
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-3">
+                    {title} <span className="text-gradient">{subtitle}</span>
+                </h2>
+            </motion.div>
+        );
+
+        // ============================================
+        // SKILLS SECTION
+        // ============================================
+        const Skills = () => {
+            return (
+                <section id="skills" className="py-24 relative">
+                    <div className="absolute top-1/2 left-0 w-72 h-72 bg-cyan/5 rounded-full blur-3xl" />
+                    <div className="max-w-7xl mx-auto px-6 relative">
+                        <SectionHeader label="My Toolkit" title="Skills &" subtitle="Technologies" />
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+                            {portfolioData.skills.categories.map((category, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.1, duration: 0.5 }}
+                                    className="glass glass-hover rounded-xl p-6 glow-hover"
+                                >
+                                    <div className="flex items-center gap-3 mb-5">
+                                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan/20 to-blue/20 border border-cyan/30 flex items-center justify-center text-cyan">
+                                            <Icon name={category.icon} size={20} />
+                                        </div>
+                                        <h3 className="text-lg font-semibold">{category.name}</h3>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {category.items.map((skill, j) => (
+                                            <motion.span
+                                                key={j}
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                whileInView={{ opacity: 1, scale: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: i * 0.1 + j * 0.05 }}
+                                                className="px-3 py-1.5 text-sm bg-white/[0.03] border border-white/10 rounded-md text-gray-300 hover:border-cyan/40 hover:text-cyan transition-all"
+                                            >
+                                                {skill}
+                                            </motion.span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // ============================================
+        // PROJECTS SECTION
+        // ============================================
+        const Projects = () => {
+            return (
+                <section id="projects" className="py-24 relative">
+                    <div className="absolute top-1/3 right-0 w-72 h-72 bg-blue/5 rounded-full blur-3xl" />
+                    <div className="max-w-7xl mx-auto px-6 relative">
+                        <SectionHeader label="Portfolio" title="Featured" subtitle="Projects" />
+
+                        <div className="grid md:grid-cols-2 gap-6 mt-12">
+                            {portfolioData.projects.map((project, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.1 }}
+                                    className="glass glass-hover rounded-xl overflow-hidden group"
+                                >
+                                    <div className="relative h-48 overflow-hidden">
+                                        <img
+                                            src={project.image}
+                                            alt={project.title}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent" />
+                                    </div>
+
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-semibold mb-2 group-hover:text-cyan transition-colors">
+                                            {project.title}
+                                        </h3>
+                                        <p className="text-gray-400 text-sm mb-3 leading-relaxed">
+                                            {project.description}
+                                        </p>
+                                        <p className="text-xs text-cyan/80 mb-4 italic">
+                                            Problem: {project.problem}
+                                        </p>
+
+                                        <div className="flex flex-wrap gap-2 mb-5">
+                                            {project.tech.map((tech, j) => (
+                                                <span
+                                                    key={j}
+                                                    className="px-2 py-1 text-xs bg-cyan/5 border border-cyan/20 rounded text-cyan"
+                                                >
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <a
+                                                href={project.github}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="px-4 py-2 text-sm border border-cyan/30 text-cyan rounded-md hover:bg-cyan/10 transition-all flex items-center gap-2"
+                                            >
+                                                <Icon name="github" size={14} /> Source Code
+                                            </a>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // ============================================
+        // LEETCODE SECTION
+        // ============================================
+        const LeetCode = () => {
+            const stats = [
+                { label: "Total Solved", value: portfolioData.leetcode.total, color: "from-cyan to-blue" },
+                { label: "Easy", value: portfolioData.leetcode.easy, color: "from-green-400 to-emerald-500" },
+                { label: "Medium", value: portfolioData.leetcode.medium, color: "from-yellow-400 to-orange-500" },
+                { label: "Hard", value: portfolioData.leetcode.hard, color: "from-red-400 to-pink-500" },
+                { label: "Current Streak", value: portfolioData.leetcode.streak, color: "from-purple-400 to-pink-500" },
+            ];
+
+            return (
+                <section className="py-24 relative">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan/5 rounded-full blur-3xl" />
+                    <div className="max-w-7xl mx-auto px-6 relative">
+                        <SectionHeader label="Problem Solving" title="LeetCode" subtitle="Stats" />
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="glass rounded-2xl p-8 md:p-12 mt-12 border-gradient"
+                        >
+                            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8">
+                                {stats.map((stat, i) => (
+                                    <motion.div
+                                        key={i}
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: i * 0.1 }}
+                                        className="text-center"
+                                    >
+                                        <div className={`text-4xl md:text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}>
+                                            {stat.value}
+                                        </div>
+                                        <div className="text-xs text-gray-400 uppercase tracking-wider">{stat.label}</div>
+                                    </motion.div>
+                                ))}
+                            </div>
+
+                            <div className="flex justify-center pt-6 border-t border-white/5">
+                                <a
+                                    href={portfolioData.leetcode.profileUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-6 py-3 bg-gradient-to-r from-cyan to-blue text-navy font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan/20 transition-all flex items-center gap-2"
+                                >
+                                    <Icon name="external" size={16} /> View LeetCode Profile
+                                </a>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        // ============================================
+        // JOURNEY / TIMELINE SECTION
+        // ============================================
+        const Journey = () => {
+            return (
+                <section id="journey" className="py-24 relative">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <SectionHeader label="My Path" title="Learning" subtitle="Journey" />
+
+                        <div className="relative mt-16 max-w-3xl mx-auto">
+                            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-cyan via-blue to-transparent" />
+
+                            <div className="space-y-12">
+                                {portfolioData.journey.map((item, i) => (
+                                    <motion.div
+                                        key={i}
+                                        initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5 }}
+                                        className={`relative flex items-center ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+                                    >
+                                        <div className="absolute left-4 md:left-1/2 w-3 h-3 -ml-1.5 rounded-full bg-cyan shadow-lg shadow-cyan/50 pulse-glow" />
+
+                                        <div className={`ml-12 md:ml-0 md:w-1/2 ${i % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
+                                                <motion.div
+                                                    whileHover={{ y: -4 }}
+                                                    className="glass glass-hover rounded-xl p-5"
+                                                >
+                                                    <div className="flex items-center gap-3 mb-2">
+                                                        <span className="px-2 py-1 text-xs bg-cyan/10 border border-cyan/30 text-cyan rounded">
+                                                            {item.year}
+                                                        </span>
+                                                        {item.type === 'current' && (
+                                                            <span className="px-2 py-1 text-xs bg-green-500/10 border border-green-500/30 text-green-400 rounded flex items-center gap-1">
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                                                                Current
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <h4 className="text-lg font-semibold mb-1">{item.title}</h4>
+                                                    <p className="text-sm text-gray-400">{item.description}</p>
+                                                </motion.div>
+                                            </div>
+                                            <div className="hidden md:block md:w-1/2" />
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                );
+        };
+
+        // ============================================
+        // EDUCATION SECTION
+        // ============================================
+const Education = () => {
+
+    const educationItems = [
+        {
+            level: "School",
+            institution: portfolioData.education.school.institution,
+            qualification: portfolioData.education.school.qualification,
+            result: portfolioData.education.school.percentage,
+            year: portfolioData.education.school.year,
+            location: portfolioData.education.school.location
+        },
+
+        {
+            level: "Pre-University College",
+            institution: portfolioData.education.puCollege.institution,
+            qualification: portfolioData.education.puCollege.qualification,
+            stream: portfolioData.education.puCollege.stream,
+            result: portfolioData.education.puCollege.percentage,
+            year: portfolioData.education.puCollege.year,
+            location: portfolioData.education.puCollege.location
+        },
+
+        {
+            level: "Engineering",
+            institution: portfolioData.education.engineering.institution,
+            qualification: portfolioData.education.engineering.qualification,
+            result: portfolioData.education.engineering.cgpa,
+            year: portfolioData.education.engineering.year,
+            location: portfolioData.education.engineering.location,
+            status: portfolioData.education.engineering.status
+        }
+    ];
+
+    return (
+        <section id="education" className="py-24 relative">
+
+            <div className="max-w-7xl mx-auto px-6">
+
+                <SectionHeader
+                    label="Academic Journey"
+                    title="My"
+                    subtitle="Education"
+                />
+
+                <div className="max-w-4xl mx-auto mt-12 space-y-6">
+
+                    {educationItems.map((education, index) => (
+
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.15 }}
+                            className="glass glass-hover rounded-2xl p-6 md:p-8"
+                        >
+
+                            <div className="flex flex-col md:flex-row md:justify-between gap-5">
+
+                                <div>
+
+                                    <span className="inline-block px-3 py-1 mb-3 text-xs text-cyan bg-cyan/10 border border-cyan/20 rounded-full">
+                                        {education.level}
+                                    </span>
+
+                                    <h3 className="text-xl md:text-2xl font-bold mb-2">
+                                        {education.institution}
+                                    </h3>
+
+                                    <p className="text-cyan font-medium">
+                                        {education.qualification}
+                                    </p>
+
+                                    {education.stream && (
+                                        <p className="text-gray-400 text-sm mt-2">
+                                            Stream: {education.stream}
+                                        </p>
+                                    )}
+
+                                    <div className="flex flex-wrap gap-4 mt-5 text-sm text-gray-400">
+                                        <span>📅 {education.year}</span>
+                                        <span>📍 {education.location}</span>
+                                    </div>
+
+                                </div>
+
+                                <div className="md:text-right">
+
+                                    <div className="text-3xl font-bold text-gradient">
+                                        {education.result}
+                                    </div>
+
+                                    <div className="text-xs text-gray-500 uppercase tracking-wider">
+                                        {education.level === "Engineering"
+                                            ? "CGPA"
+                                            : "Percentage"}
+                                    </div>
+
+                                    {education.status && (
+                                        <span className="inline-block mt-3 px-3 py-1 text-xs text-green-400 bg-green-500/10 border border-green-500/30 rounded">
+                                            {education.status}
+                                        </span>
+                                    )}
+
+                                </div>
+
+                            </div>
+
+                        </motion.div>
+
+                    ))}
+
+                </div>
+
+            </div>
+
+        </section>
+    );
+};
+        // ============================================
+// CERTIFICATIONS SECTION
+// ============================================
+const Certifications = () => {
+    return (
+        <section id="certifications" className="py-24 relative">
+            <div className="max-w-7xl mx-auto px-6">
+
+                <SectionHeader
+                    label="My Achievements"
+                    title="Professional"
+                    subtitle="Certifications"
+                />
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+
+                    {portfolioData.certifications.map((certificate, i) => (
+
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className="glass glass-hover rounded-xl p-6 glow-hover"
+                        >
+
+                            {/* Certificate Icon */}
+                            <div className="w-12 h-12 rounded-xl bg-cyan/10 border border-cyan/30 flex items-center justify-center text-cyan mb-5">
+                                <Icon name="trophy" size={24} />
+                            </div>
+
+                            {/* Title */}
+                            <h3 className="text-xl font-semibold mb-2">
+                                {certificate.title}
+                            </h3>
+
+                            {/* Issuer */}
+                            <p className="text-cyan text-sm font-medium mb-1">
+                                {certificate.issuer}
+                            </p>
+
+                            {/* Date */}
+                            <p className="text-gray-500 text-xs mb-4">
+                                Issued: {certificate.date}
+                            </p>
+
+                            {/* Description */}
+                            <p className="text-gray-400 text-sm leading-relaxed mb-5">
+                                {certificate.description}
+                            </p>
+
+                            {/* Skills */}
+                            <div className="flex flex-wrap gap-2 mb-6">
+                                {certificate.skills.map((skill, j) => (
+                                    <span
+                                        key={j}
+                                        className="px-2 py-1 text-xs bg-cyan/5 border border-cyan/20 rounded text-cyan"
+                                    >
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
+
+                            {/* Certificate Button */}
+                            <a
+                                href={certificate.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-2 text-sm border border-cyan/30 text-cyan rounded-md hover:bg-cyan/10 transition-all"
+                            >
+                                <Icon name="external" size={14} />
+                                View Certificate
+                            </a>
+
+                        </motion.div>
+
+                    ))}
+
+                </div>
+            </div>
+        </section>
+    );
+};
+
+        // ============================================
+        // RESUME SECTION
+        // ============================================
+        const Resume = () => {
+            return (
+                <section className="py-24 relative">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue/5 rounded-full blur-3xl" />
+                    <div className="max-w-4xl mx-auto px-6 relative">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="glass rounded-2xl p-12 text-center border-gradient glow-hover"
+                        >
+                            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-cyan/20 to-blue/20 border border-cyan/30 flex items-center justify-center">
+                                <Icon name="download" size={28} className="text-cyan" />
+                            </div>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+                                Want to know more <span className="text-gradient">about me?</span>
+                            </h2>
+                            <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+                                Download my resume to learn more about my experience, skills, and projects.
+                            </p>
+                            <a
+                                href={portfolioData.resume.url}
+                                download={portfolioData.resume.filename}
+                                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan to-blue text-navy font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan/20 transition-all"
+                            >
+                                <Icon name="download" size={18} /> Download Resume
+                            </a>
+                        </motion.div>
+                    </div>
+                </section>
+            );
+        };
+
+        // ============================================
+        // CONTACT SECTION
+        // ============================================
+        const Contact = () => {
+            const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+            const [errors, setErrors] = useState({});
+            const [submitted, setSubmitted] = useState(false);
+
+            const validate = () => {
+                const newErrors = {};
+                if (!formData.name.trim()) newErrors.name = 'Name is required';
+                if (!formData.email.trim()) {
+                    newErrors.email = 'Email is required';
+                } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+                    newErrors.email = 'Email is invalid';
+                }
+                if (!formData.message.trim()) newErrors.message = 'Message is required';
+                return newErrors;
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                const newErrors = validate();
+                if (Object.keys(newErrors).length === 0) {
+                    setSubmitted(true);
+                    setFormData({ name: '', email: '', message: '' });
+                    setTimeout(() => setSubmitted(false), 4000);
+                } else {
+                    setErrors(newErrors);
+                }
+            };
+
+            const handleChange = (field, value) => {
+                setFormData({ ...formData, [field]: value });
+                if (errors[field]) setErrors({ ...errors, [field]: '' });
+            };
+
+            return (
+                <section id="contact" className="py-24 relative">
+                    <div className="max-w-5xl mx-auto px-6">
+                        <SectionHeader label="Get In Touch" title="Let's" subtitle="Connect" />
+
+                        <div className="grid md:grid-cols-5 gap-8 mt-12">
+                            <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                className="md:col-span-2 space-y-4"
+                            >
+                                <h3 className="text-2xl font-bold mb-4">Let's work together</h3>
+                                <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                                    I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+                                </p>
+
+                                <div className="space-y-3">
+                                    <a
+                                        href={portfolioData.social.email}
+                                        className="glass glass-hover rounded-lg p-4 flex items-center gap-3 group"
+                                    >
+                                        <div className="w-10 h-10 rounded-lg bg-cyan/10 border border-cyan/30 flex items-center justify-center text-cyan group-hover:scale-110 transition-transform">
+                                            <Icon name="mail" size={18} />
+                                        </div>
+                                        <div>
+                                            <div className="text-xs text-gray-500">Email</div>
+                                            <div className="text-sm text-gray-300">{portfolioData.personal.email}</div>
+                                        </div>
+                                    </a>
+
+                                    <a
+                                        href={portfolioData.social.github}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="glass glass-hover rounded-lg p-4 flex items-center gap-3 group"
+                                    >
+                                        <div className="w-10 h-10 rounded-lg bg-cyan/10 border border-cyan/30 flex items-center justify-center text-cyan group-hover:scale-110 transition-transform">
+                                            <Icon name="github" size={18} />
+                                        </div>
+                                        <div>
+                                            <div className="text-xs text-gray-500">GitHub</div>
+                                            <div className="text-sm text-gray-300">@naveenkumar</div>
+                                        </div>
+                                    </a>
+
+                                    <a
+                                        href={portfolioData.social.linkedin}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="glass glass-hover rounded-lg p-4 flex items-center gap-3 group"
+                                    >
+                                        <div className="w-10 h-10 rounded-lg bg-cyan/10 border border-cyan/30 flex items-center justify-center text-cyan group-hover:scale-110 transition-transform">
+                                            <Icon name="linkedin" size={18} />
+                                        </div>
+                                        <div>
+                                            <div className="text-xs text-gray-500">LinkedIn</div>
+                                            <div className="text-sm text-gray-300">Naveen Kumar</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </motion.div>
+
+                            <motion.form
+                                initial={{ opacity: 0, x: 30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                onSubmit={handleSubmit}
+                                className="md:col-span-3 glass rounded-xl p-6 space-y-4"
+                            >
+                                <div>
+                                    <label className="text-xs text-gray-400 mb-2 block">Name</label>
+                                    <input
+                                        type="text"
+                                        value={formData.name}
+                                        onChange={(e) => handleChange('name', e.target.value)}
+                                        className={`w-full px-4 py-3 bg-white/[0.02] border ${errors.name ? 'border-red-500/50' : 'border-white/10'} rounded-lg text-white placeholder-gray-500 focus:border-cyan/50 transition-colors`}
+                                        placeholder="Your name"
+                                    />
+                                    {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="text-xs text-gray-400 mb-2 block">Email</label>
+                                    <input
+                                        type="email"
+                                        value={formData.email}
+                                        onChange={(e) => handleChange('email', e.target.value)}
+                                        className={`w-full px-4 py-3 bg-white/[0.02] border ${errors.email ? 'border-red-500/50' : 'border-white/10'} rounded-lg text-white placeholder-gray-500 focus:border-cyan/50 transition-colors`}
+                                        placeholder="your.email@example.com"
+                                    />
+                                    {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="text-xs text-gray-400 mb-2 block">Message</label>
+                                    <textarea
+                                        value={formData.message}
+                                        onChange={(e) => handleChange('message', e.target.value)}
+                                        rows="5"
+                                        className={`w-full px-4 py-3 bg-white/[0.02] border ${errors.message ? 'border-red-500/50' : 'border-white/10'} rounded-lg text-white placeholder-gray-500 focus:border-cyan/50 transition-colors resize-none`}
+                                        placeholder="Tell me about your project..."
+                                    />
+                                    {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="w-full px-6 py-3 bg-gradient-to-r from-cyan to-blue text-navy font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan/20 transition-all flex items-center justify-center gap-2"
+                                >
+                                    <Icon name="send" size={16} /> Send Message
+                                </button>
+
+                                <AnimatePresence>
+                                    {submitted && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0 }}
+                                            className="p-3 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center gap-2 text-green-400 text-sm"
+                                        >
+                                            <Icon name="check" size={16} /> Message sent successfully!
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.form>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // ============================================
+        // FOOTER
+        // ============================================
+        const Footer = () => {
+            const currentYear = new Date().getFullYear();
+
+            return (
+                <footer className="border-t border-white/5 py-12 mt-12">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="grid md:grid-cols-3 gap-8 mb-8">
+                            <div>
+                                <div className="text-2xl font-bold mb-2">
+                                    <span className="text-gradient">{portfolioData.personal.name}</span>
+                                </div>
+                                <p className="text-sm text-gray-400 italic">{portfolioData.personal.tagline}</p>
+                            </div>
+
+                            <div className="md:text-center">
+                                <h4 className="text-sm font-semibold mb-3 text-gray-300">Quick Links</h4>
+                                <div className="flex md:justify-center gap-4 text-sm text-gray-400 flex-wrap">
+                                    {['About', 'Skills', 'Projects', 'Journey', 'Contact'].map((item) => (
+                                        <button
+                                            key={item}
+                                            onClick={() => document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })}
+                                            className="hover:text-cyan transition-colors"
+                                        >
+                                            {item}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="md:text-right">
+                                <h4 className="text-sm font-semibold mb-3 text-gray-300">Connect</h4>
+                                <div className="flex md:justify-end gap-3">
+                                    {[
+                                        { href: portfolioData.social.github, icon: 'github' },
+                                        { href: portfolioData.social.linkedin, icon: 'linkedin' },
+                                        { href: portfolioData.social.email, icon: 'mail' },
+                                        { href: portfolioData.social.leetcode, icon: 'code' },
+                                    ].map((social, i) => (
+                                        <a
+                                            key={i}
+                                            href={social.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-9 h-9 rounded-lg glass glass-hover flex items-center justify-center text-gray-300 hover:text-cyan"
+                                        >
+                                            <Icon name={social.icon} size={16} />
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+                            <div>© {currentYear} {portfolioData.personal.name}. All rights reserved.</div>
+                            <div className="font-mono">Built with React + Tailwind + Framer Motion</div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        // ============================================
+        // MAIN APP COMPONENT
+        // ============================================
+        const App = () => {
+            return (
+                <div className="min-h-screen bg-navy">
+                    <Navbar />
+                    <main>
+                        <Hero />
+                        <About />
+                        <Skills />
+                        <Projects />
+                        <LeetCode />
+                        <Journey />
+                        <Education />
+                        <Certifications />
+                        <Resume />
+                        <Contact />
+                    </main>
+                    <Footer />
+                </div>
+            );
+        };
+
+        // ============================================
+        // RENDER APP
+        // ============================================
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+```
